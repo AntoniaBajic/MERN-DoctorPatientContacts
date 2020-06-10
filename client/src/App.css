@@ -7,6 +7,7 @@
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
   --success-color: #28a745;
+  --patient-color: rgb(180, 33, 143);
 }
 
 * {
@@ -72,6 +73,10 @@ img {
 
 .text-primary {
   color: var(--primary-color);
+}
+
+.text-patient {
+  color: var(--patient-color);
 }
 
 .text-dark {
@@ -287,6 +292,13 @@ img {
 .bg-light,
 .badge-light {
   border: #ccc solid 1px;
+}
+
+.btn-patient,
+.bg-patient,
+.badge-patient {
+  background: var(--patient-color);
+  color: #fff;
 }
 
 .round-img {
