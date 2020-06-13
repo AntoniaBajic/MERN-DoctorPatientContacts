@@ -2,6 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
+import setAuthToken from '../../utils/SetAuthToken';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -26,7 +27,7 @@ const AuthState = (props) => {
 
   // Load User
   const loadUser = async () => {
-    // @todo-load token into global headers
+    setAuthToken(localStorage.token);
 
     try {
       const res = await axios.get('/api/auth');
@@ -55,6 +56,8 @@ const AuthState = (props) => {
         type: REGISTER_SUCCESS,
         payload: res.data,
       });
+
+      loadUser();
     } catch (err) {
       dispatch({
         type: REGISTER_FAIL,
@@ -64,7 +67,27 @@ const AuthState = (props) => {
   };
 
   // Login User
-  const login = () => console.log('Login');
+  const login = async (formData) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const res = await axios.post('/api/auth', formData, config);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data,
+      });
+
+      loadUser();
+    } catch (err) {
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: err.response.data.msg,
+      });
+    }
+  };
 
   // Logout
   const logout = () => console.log('Logout');
@@ -78,7 +101,6 @@ const AuthState = (props) => {
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
-        token: state.token,
         error: state.error,
         register,
         login,
