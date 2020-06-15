@@ -9,6 +9,7 @@ const Navbar = ({ title, icon }) => {
   const contactContext = useContext(ContactContext);
 
   const { isAuthenticated, logout, user, loadUser } = authContext;
+  const { clearContacts } = contactContext;
   useEffect(() => {
     loadUser();
     // eslint-disable-next-line
@@ -16,6 +17,7 @@ const Navbar = ({ title, icon }) => {
 
   const onLogout = () => {
     logout();
+    clearContacts();
   };
 
   const authLinks = (
